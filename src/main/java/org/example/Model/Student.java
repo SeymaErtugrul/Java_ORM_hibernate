@@ -131,4 +131,26 @@ public class Student {
             session.close();
         }
     }
+
+    public static void deleteStudent(int id) {
+        Session session = hibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+            Student student = session.get(Student.class, id);
+            if (student != null) {
+                session.delete(student);
+                System.out.println("Öğrenci başarıyla silindi.");
+            } else {
+                System.out.println("Belirtilen ID ile öğrenci bulunamadı.");
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
 }

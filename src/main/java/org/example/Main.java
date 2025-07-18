@@ -16,7 +16,9 @@ public class Main {
         Student student = new Student();
         student.getStudentById(2);
 
-        Student.updateStudent(1,"nana","birinci");
+       // Student.updateStudent(1,"nana","birinci");
+
+        Student.deleteStudent(1);
 
         List<Student> allStudents = Student.getAllStudents();
 
