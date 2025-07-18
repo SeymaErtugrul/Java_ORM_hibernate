@@ -7,24 +7,24 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
 
-Session session= hibernateUtil.getSessionFactory().openSession();
-        Transaction transaction=null;
 
-        try{
-            transaction=session.beginTransaction();
-            Student student=new Student("seyma","ert");
+        Student student = new Student();
+        student.getStudentById(2);
 
-            Student student1=new Student();
-            student1.setName("nana");
-            student1.setSurname("ikinci");
-            session.save(student1);
-            transaction.commit();
-            session.close();
-       } catch (Exception e) {
-            e.printStackTrace();
+        Student.saveStudents("seymas", "ert");
+
+        List<Student> allStudents = Student.getAllStudents();
+
+        for (Student s : allStudents) {
+            System.out.println(s.getName() + " " + s.getSurname());
         }
+
     }
 }
+
+

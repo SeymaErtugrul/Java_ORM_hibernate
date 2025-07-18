@@ -1,6 +1,12 @@
 package org.example.Model;
 
 import jakarta.persistence.*;
+import org.example.Util.hibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import java.util.List;
+
 
 @Entity
 @Table(name="students")
@@ -44,4 +50,70 @@ public class Student {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+
+    public Student getStudentById(int id) {
+        Session session = null;
+        Transaction transaction = null;
+        Student student = null;
+        try {
+            session = hibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            student = session.get(Student.class, id);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+        return student;
+    }
+
+    public static void saveStudents(String name,String surname) {
+        Session session = hibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+
+            Student student = new Student();
+            student.setName(name);
+            student.setSurname(surname);
+            session.save(student);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+    public static List<Student> getAllStudents() {
+        Session session = null;
+        Transaction transaction = null;
+        List<Student> students = null;
+
+        try {
+            session = hibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            // HQL sorgusu ile tüm Student kayıtlarını alıyoruz
+            students = session.createQuery("from Student", Student.class).list();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+
+        return students;
+
+    }
+
 }
