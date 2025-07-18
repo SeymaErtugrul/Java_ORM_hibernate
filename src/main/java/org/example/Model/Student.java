@@ -18,6 +18,9 @@ public class Student {
         this.surname = surname;
     }
 
+    public Student() {
+    }
+
     public int getId() {
         return id;
     }

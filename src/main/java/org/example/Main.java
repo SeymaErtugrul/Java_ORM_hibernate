@@ -6,10 +6,7 @@ import org.example.Util.hibernateUtil;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.TransactionManagementException;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
 
@@ -19,7 +16,14 @@ Session session= hibernateUtil.getSessionFactory().openSession();
         try{
             transaction=session.beginTransaction();
             Student student=new Student("seyma","ert");
-        } catch (Exception e) {
+
+            Student student1=new Student();
+            student1.setName("nana");
+            student1.setSurname("ikinci");
+            session.save(student1);
+            transaction.commit();
+            session.close();
+       } catch (Exception e) {
             e.printStackTrace();
         }
     }
