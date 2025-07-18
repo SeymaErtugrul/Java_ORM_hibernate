@@ -16,13 +16,14 @@ public class Main {
         Student student = new Student();
         student.getStudentById(2);
 
-        Student.saveStudents("seymas", "ert");
+        Student.updateStudent(1,"nana","birinci");
 
         List<Student> allStudents = Student.getAllStudents();
 
         for (Student s : allStudents) {
             System.out.println(s.getName() + " " + s.getSurname());
         }
+
 
     }
 }

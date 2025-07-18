@@ -59,9 +59,7 @@ public class Student {
         try {
             session = hibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-
             student = session.get(Student.class, id);
-
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -78,12 +76,10 @@ public class Student {
 
         try {
             transaction = session.beginTransaction();
-
             Student student = new Student();
             student.setName(name);
             student.setSurname(surname);
             session.save(student);
-
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -101,7 +97,6 @@ public class Student {
             session = hibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
 
-            // HQL sorgusu ile tüm Student kayıtlarını alıyoruz
             students = session.createQuery("from Student", Student.class).list();
 
             transaction.commit();
@@ -113,7 +108,27 @@ public class Student {
         }
 
         return students;
-
     }
+    public static void updateStudent(int id, String newName, String newSurname) {
+        Session session = hibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = null;
 
+        try {
+            transaction = session.beginTransaction();
+            Student student = session.get(Student.class, id);
+            if (student != null) {
+                student.setName(newName);
+                student.setSurname(newSurname);
+                session.update(student);
+            } else {
+                System.out.println("Öğrenci bulunamadı id: " + id);
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
 }
